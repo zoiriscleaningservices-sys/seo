@@ -2,36 +2,190 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SEO Generator Pro — Yoast Style</title>
+<title>TrueWebX SEO — AI God Mode Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-<div class="app">
-  <h1>🔥 SEO Generator Pro</h1>
-  <p>Yoast-Style SEO for Any Website</p>
+<style>
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #0b1d3a, #050b18);
+  color:#fff;
+}
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
+}
+h1{
+  font-size:42px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+.brand{
+  color:#4fc3ff;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-top:30px;
+}
+input, textarea{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  font-size:15px;
+  background:#0e1a30;
+  color:#fff;
+  margin-bottom:12px;
+  box-sizing:border-box;
+}
+textarea{
+  min-height:360px;
+  font-family:monospace;
+  resize:vertical;
+}
+button{
+  margin-top:20px;
+  padding:16px 26px;
+  font-size:16px;
+  font-weight:700;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:linear-gradient(135deg,#4fc3ff,#0077ff);
+  color:#000;
+}
+button:hover{
+  opacity:.9;
+}
+button:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
+.copy{
+  float:right;
+  cursor:pointer;
+  font-size:14px;
+  opacity:.8;
+  margin-bottom:8px;
+}
+.copy:hover{
+  opacity:1;
+}
+.status{
+  margin-top:10px;
+  font-size:14px;
+  opacity:0.8;
+}
+footer{
+  text-align:center;
+  margin-top:40px;
+  opacity:.6;
+  font-size:14px;
+}
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1><span class="brand">TrueWebX SEO</span> — AI God Mode</h1>
+  <p>Fully automatic AI-powered SEO generator. Fill → Click → Get perfect meta tags instantly (powered by Gemini).</p>
 
   <div class="grid">
+    <!-- INPUTS -->
+    <div>
+      <input id="biz" placeholder="Business Name (e.g. Johnson's Roofing)">
+      <input id="service" placeholder="Main Service (e.g. Roof Repair)">
+      <input id="city" placeholder="City, State (e.g. Mobile, AL)">
+      <input id="url" placeholder="Page URL (e.g. https://johnsonsroofing.com/roof-repair)">
+      <input id="img" placeholder="OG Image URL (512x512 recommended)">
+      <input id="extra" placeholder="Extra details (keywords, unique selling points, etc.)">
+      <button id="genBtn" onclick="generateWithAI()">🤖 Generate SEO with AI</button>
+      <div class="status" id="status"></div>
+    </div>
 
-    <input id="title" placeholder="Page Title">
-    <textarea id="description" placeholder="Meta Description"></textarea>
-
-    <input id="url" placeholder="Page URL">
-    <input id="siteName" placeholder="Site Name">
-
-    <input id="image" placeholder="OG Image URL">
-    <input id="twitter" placeholder="Twitter @username">
-
-    <input id="publisher" placeholder="Facebook Page URL">
-
-    <button onclick="generateSEO()">⚡ Generate SEO</button>
+    <!-- OUTPUT -->
+    <div>
+      <div class="copy" onclick="copySEO()">📋 Copy into &lt;head&gt;</div>
+      <textarea id="out" placeholder="Your AI-generated SEO code will appear here…"></textarea>
+    </div>
   </div>
 
-  <h2>📋 Copy & Paste Into &lt;head&gt;</h2>
-  <textarea id="output" readonly></textarea>
+  <footer>
+    © TrueWebX SEO — Powered by Google Gemini AI (via Puter.js - Free & Instant)
+  </footer>
 </div>
 
-<script src="app.js"></script>
+<script src="https://js.puter.com/v2/"></script>
+
+<script>
+function v(id){return document.getElementById(id).value.trim();}
+
+async function generateWithAI(){
+  const biz = v("biz") || "Your Business";
+  const service = v("service") || "your service";
+  const city = v("city") || "your city";
+  const url = v("url") || "https://example.com/page";
+  const img = v("img") || "https://example.com/og-image.jpg";
+  const extra = v("extra");
+
+  const status = document.getElementById("status");
+  const btn = document.getElementById("genBtn");
+  status.textContent = "Generating with Gemini AI... (5-15 seconds)";
+  btn.disabled = true;
+
+  const prompt = `You are an expert local SEO specialist. Generate COMPLETE HTML meta tags for a service page.
+
+Business: ${biz}
+Service: ${service}
+Location: ${city}
+Page URL: ${url}
+OG Image: ${img}
+${extra ? `Extra info: ${extra}` : ''}
+
+Requirements:
+- Compelling <title> tag (50-60 characters)
+- Persuasive meta description (150-160 characters) with call to action
+- Canonical link
+- Full Open Graph tags (og:title, og:description, og:url, og:image with width/height/type, og:site_name, etc.)
+- Twitter cards
+- Professional, trustworthy, unique language optimized for ranking in ${city}
+
+Output ONLY the clean HTML code block, starting with <!-- Optimized with TrueWebX AI God Mode --> and ending with <!-- End TrueWebX SEO -->. No explanations or extra text.`;
+
+  try {
+    const response = await puter.ai.chat(prompt, {model: "gemini-1.5-pro"});
+    
+    // Clean any markdown code fences
+    let code = response.replace(/```html|```/g, '').trim();
+
+    document.getElementById("out").value = code;
+    status.textContent = "✅ AI generation complete! Ready to copy.";
+  } catch (err) {
+    status.textContent = "❌ Error: AI generation failed. Try again or check your connection.";
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function copySEO(){
+  const out = document.getElementById("out");
+  out.select();
+  out.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(out.value).then(() => {
+    alert("SEO code copied! Paste into your page's <head> section.");
+  }).catch(() => {
+    alert("Copied (fallback)! Ready to paste.");
+  });
+}
+</script>
+
 </body>
-</html>
+</html>    
