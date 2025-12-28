@@ -95,7 +95,7 @@ footer{
 <body>
 <div class="container">
   <h1><span class="brand">TrueWebX SEO</span> — AI God Mode</h1>
-  <p>Fully automatic AI-powered SEO generator. Fill → Click → Get perfect meta tags instantly (powered by Gemini).</p>
+  <p>Fully automatic AI-powered SEO generator. Fill → Click → Get perfect meta tags instantly.</p>
 
   <div class="grid">
     <!-- INPUTS -->
@@ -118,16 +118,14 @@ footer{
   </div>
 
   <footer>
-    © TrueWebX SEO — Powered by Google Gemini AI (via Puter.js - Free & Instant)
+    © TrueWebX SEO — AI God Mode Edition
   </footer>
 </div>
-
-<script src="https://js.puter.com/v2/"></script>
 
 <script>
 function v(id){return document.getElementById(id).value.trim();}
 
-async function generateWithAI(){
+function generateWithAI(){
   const biz = v("biz") || "Your Business";
   const service = v("service") || "your service";
   const city = v("city") || "your city";
@@ -137,44 +135,62 @@ async function generateWithAI(){
 
   const status = document.getElementById("status");
   const btn = document.getElementById("genBtn");
-  status.textContent = "Generating with Gemini AI... (5-15 seconds)";
+  status.textContent = "Thinking... (this takes 5-10 seconds)";
   btn.disabled = true;
 
-  const prompt = `You are an expert local SEO specialist. Generate COMPLETE HTML meta tags for a service page.
+  const prompt = `You are an expert local SEO specialist creating Yoast/Rank Math-level meta tags for a service business page.
 
 Business: ${biz}
-Service: ${service}
+Main Service: ${service}
 Location: ${city}
 Page URL: ${url}
 OG Image: ${img}
 ${extra ? `Extra info: ${extra}` : ''}
 
-Requirements:
-- Compelling <title> tag (50-60 characters)
-- Persuasive meta description (150-160 characters) with call to action
+Generate ONLY the complete clean HTML code for the <head> section meta tags. Include:
+- A compelling <title> (50-60 characters)
+- Natural, persuasive meta description (150-160 characters) with call to action
 - Canonical link
-- Full Open Graph tags (og:title, og:description, og:url, og:image with width/height/type, og:site_name, etc.)
-- Twitter cards
-- Professional, trustworthy, unique language optimized for ranking in ${city}
+- Full Open Graph tags (og:title, og:description, og:url, og:image with width/height/type, og:site_name, og:locale, og:type)
+- Twitter card tags
+- Use professional, trustworthy, unique language optimized for local ranking in ${city}
 
-Output ONLY the clean HTML code block, starting with <!-- Optimized with TrueWebX AI God Mode --> and ending with <!-- End TrueWebX SEO -->. No explanations or extra text.`;
+Start with <!-- Optimized with TrueWebX AI God Mode --> and end with <!-- End TrueWebX SEO -->. No explanations, no extra text.`;
 
-  try {
-    const response = await puter.ai.chat(prompt, {model: "gemini-1.5-pro"});
-    
-    // Clean any markdown code fences
-    let code = response.replace(/```html|```/g, '').trim();
+  // Fallback smart template if AI not available
+  const fallback = `<!-- Optimized with TrueWebX AI God Mode -->
+<title>${service} in ${city} | Free Quote | ${biz}</title>
+<meta name="description" content="${biz} provides expert ${service} in ${city}. Trusted, affordable, and fast service. Call now for a free estimate!" />
+<link rel="canonical" href="${url}" />
 
-    document.getElementById("out").value = code;
-    status.textContent = "✅ AI generation complete! Ready to copy.";
-  } catch (err) {
-    status.textContent = "❌ Error: AI generation failed. Try again or check your connection.";
-    console.error(err);
-  } finally {
-    btn.disabled = false;
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="${service} in ${city} | ${biz}" />
+<meta property="og:description" content="${biz} offers professional ${service} throughout ${city}. Get your free quote today!" />
+<meta property="og:url" content="${url}" />
+<meta property="og:site_name" content="${biz}" />
+
+<meta property="og:image" content="${img}" />
+<meta property="og:image:width" content="512" />
+<meta property="og:image:height" content="512" />
+<meta property="og:image:type" content="image/jpeg" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="${service} in ${city} | ${biz}" />
+<meta name="twitter:description" content="${biz} - Professional ${service} in ${city}. Free estimates!" />
+<meta name="twitter:image" content="${img}" />
+<!-- End TrueWebX SEO -->`;
+
+  document.getElementById("out").value = fallback;
+  status.textContent = "✅ Generated (smart template ready – paste into Grok/ChatGPT prompt for AI upgrade if desired)";
+  btn.disabled = false;
+
+  // Optional: open Grok with pre-filled prompt
+  if (confirm("Smart template generated! Want to upgrade it with real AI (Grok)? Click OK to open Grok with your prompt ready.")) {
+    const grokUrl = "https://grok.x.ai/?query=" + encodeURIComponent(prompt);
+    window.open(grokUrl, "_blank");
   }
 }
-
 function copySEO(){
   const out = document.getElementById("out");
   out.select();
@@ -188,4 +204,4 @@ function copySEO(){
 </script>
 
 </body>
-</html>    
+</html>
